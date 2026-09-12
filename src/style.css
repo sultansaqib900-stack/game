@@ -23,6 +23,8 @@ canvas#game{position:absolute;inset:0;width:100%;height:100%;display:block}
   clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);overflow:hidden}
 .bar>i{position:absolute;inset:0;width:0%;transition:width .12s linear;background:var(--cyan);
   box-shadow:0 0 10px var(--cyan)}
+.bar::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(105deg,transparent 0 22px,rgba(5,6,12,.75) 22px 25px)}
 .bar.hp{height:16px;width:min(34vw,300px);border-color:rgba(255,77,94,.5)}
 .bar.hp>i{background:linear-gradient(90deg,#ff2e4d,#ff7a3d,#ffb43d);box-shadow:0 0 12px rgba(255,80,80,.7)}
 .bar.xp{flex:1;height:10px}
@@ -51,15 +53,16 @@ canvas#game{position:absolute;inset:0;width:100%;height:100%;display:block}
 .hpwrap{display:flex;align-items:center;gap:8px}
 .hplabel{font-weight:700;font-size:.85rem;padding:.2em .5em;border:1px solid rgba(255,77,94,.5);
   clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
-.items{display:flex;gap:6px;flex:1;justify-content:center;flex-wrap:wrap;max-width:52vw}
-.item-ic{width:38px;height:38px;display:grid;place-items:center;background:rgba(8,12,26,.85);
+.items{display:flex;gap:8px;flex:1;justify-content:center;flex-wrap:wrap;max-width:52vw}
+.item-ic{width:44px;height:44px;display:grid;place-items:center;background:rgba(8,12,26,.85);
   border:1px solid currentColor;box-shadow:0 0 10px -2px currentColor, inset 0 0 12px -6px currentColor;
   clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);position:relative}
 .item-ic .ic{width:20px;height:20px}
 .item-ic .lv{position:absolute;right:2px;bottom:0;font-size:.6rem;font-weight:700;color:#fff;text-shadow:0 0 4px #000}
 .hud-right{display:flex;align-items:center;gap:10px;pointer-events:auto}
+#btn-pause{position:absolute;right:16px;top:56%;transform:translateY(-50%)}
 .iconbtn{width:46px;height:46px;border-radius:50%;border:2px solid rgba(232,246,255,.7);display:grid;place-items:center;
-  background:rgba(8,12,26,.6);font-size:1.1rem;transition:transform .1s}
+  background:rgba(8,12,26,.6);font-size:1.1rem;transition:transform .1s;pointer-events:auto}
 .iconbtn:active{transform:scale(.92)}
 .dashbtn{position:relative;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;
   font-family:var(--mono);font-weight:700;font-size:.8rem;letter-spacing:.12em;color:var(--cyan);

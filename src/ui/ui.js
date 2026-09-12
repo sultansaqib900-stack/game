@@ -76,6 +76,7 @@ export class UI {
     }));
     document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
       audio.sfx('ui');
+      if (t.dataset.tab === 'settings') { this.backTarget = 'hangar'; this.renderSettings(); this.show('settings'); return; }
       document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === t));
       this.hangarTab = t.dataset.tab; this.renderHangar();
     }));
@@ -144,14 +145,19 @@ export class UI {
     const ring = $('dash-ring');
     ring.style.strokeDashoffset = String(276.5 * (1 - frac));
     $('btn-dash').classList.toggle('ready', frac >= 1);
-    // touch controls visibility
+    // touch controls visibility (idle base ring sits left-middle like the concept art)
     const touch = g.input.touch;
-    $('touch-stick').hidden = !touch || g.state !== 'play';
-    if (touch && g.input.stick.active) {
-      const s = g.input.stickScreen;
-      const el = $('touch-stick');
-      el.style.left = (s.x - 66) + 'px'; el.style.top = (s.y - 66) + 'px';
-      el.firstElementChild.style.transform = `translate(${s.dx}px,${s.dy}px)`;
+    const stickEl = $('touch-stick');
+    stickEl.hidden = !touch || g.state !== 'play';
+    if (touch && g.state === 'play') {
+      if (g.input.stick.active) {
+        const s = g.input.stickScreen;
+        stickEl.style.left = (s.x - 66) + 'px'; stickEl.style.top = (s.y - 66) + 'px';
+        stickEl.firstElementChild.style.transform = `translate(${s.dx}px,${s.dy}px)`;
+      } else {
+        stickEl.style.left = 'calc(14vw - 66px)'; stickEl.style.top = 'calc(62vh - 66px)';
+        stickEl.firstElementChild.style.transform = 'translate(0,0)';
+      }
     }
   }
   hudItems() {

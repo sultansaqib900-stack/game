@@ -317,6 +317,7 @@ export class Game extends Bus {
     this.input.enabled = false;
     audio.setIntensity(0); ads.gameplayStop();
     audio.sfx(win ? 'chest' : 'gameover');
+    if (win) this.ads_happy();
     this.coinsEarned = Math.round(p.coins + this.time / 8 + p.level * 2 + (win ? 250 : 0));
     // records
     const rec = { date: Date.now(), time: this.time, level: p.level, kills: p.kills, coins: this.coinsEarned, win };
@@ -378,6 +379,7 @@ export class Game extends Bus {
   }
 
   toast(msg) { this.emit('toast', msg); }
+  ads_happy() { try { ads.provider?.happyTime?.(); } catch {} }
 }
 
 /* local alias to avoid circular import cost in hot paths */

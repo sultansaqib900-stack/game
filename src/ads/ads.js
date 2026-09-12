@@ -151,9 +151,11 @@ class AdManager extends Bus {
   get bannerEnabled() { return this.enabled && AD_CONFIG.policy.banner.enabled && !!this.provider?.supported.banner; }
   showBanner(el) {
     this.bannerEl = el;
-    if (!this.bannerEnabled) { el.hidden = true; el.classList.remove('filled'); return; }
+    // mock provider draws its placeholder strip so the reserved slot is visible in testing
+    const show = this.enabled && (this.bannerEnabled || this.providerName === 'mock');
+    if (!show) { el.hidden = true; el.classList.remove('filled'); return; }
     el.hidden = false; el.classList.add('filled');
-    this.provider.mountBanner(el);
+    (this.bannerEnabled ? this.provider : this._mock).mountBanner(el);
     this.emit('status', this.status());
   }
   hideBanner() {

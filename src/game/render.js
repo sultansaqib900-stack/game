@@ -90,7 +90,7 @@ export class Renderer {
     }
     ctx.globalAlpha = 1;
     // grid
-    ctx.strokeStyle = 'rgba(56,240,255,.07)'; ctx.lineWidth = 1 / cam.zoom;
+    ctx.strokeStyle = 'rgba(56,240,255,.1)'; ctx.lineWidth = 1 / cam.zoom;
     const step = 120;
     ctx.beginPath();
     for (let gx = Math.floor(x0 / step) * step; gx < x0 + vw + step; gx += step) { ctx.moveTo(gx, y0 - 10); ctx.lineTo(gx, y0 + vh + 10); }
@@ -179,7 +179,7 @@ export class Renderer {
     for (const e of w.enemies.items) {
       if (e.dead) continue;
       const c = e.flash > 0.4 ? '#ffffff' : e.color;
-      if (q !== 'low') this.glow(e.x, e.y, e.r * (e.boss ? 3.2 : 2.3), e.color, e.boss ? 0.9 : 0.55);
+      if (q !== 'low') this.glow(e.x, e.y, e.r * (e.boss ? 2.6 : 1.9), e.color, e.boss ? 0.85 : 0.5);
       ctx.save(); ctx.translate(e.x, e.y);
       if (e.elite || e.boss) {
         ctx.strokeStyle = hexA(e.color, 0.5 + Math.sin(this.game.time * 6) * 0.2);
@@ -187,12 +187,12 @@ export class Renderer {
       }
       ctx.rotate(e.def.behavior === 'chase' || e.def.behavior === 'swarm' ? Math.atan2(e.vy, e.vx) : e.angle);
       this.shapePath(ctx, e.def.shape, e.r);
-      ctx.fillStyle = hexA(e.color, 0.22); ctx.fill();
-      ctx.strokeStyle = c; ctx.lineWidth = e.boss ? 4 : 2.2;
-      ctx.shadowColor = e.color; ctx.shadowBlur = q === 'low' ? 0 : 10;
-      ctx.stroke(); ctx.shadowBlur = 0;
+      ctx.fillStyle = hexA(e.color, 0.13); ctx.fill();
+      ctx.strokeStyle = c; ctx.lineWidth = e.boss ? 4.5 : 2.6;
+      ctx.shadowColor = e.color; ctx.shadowBlur = q === 'low' ? 0 : 14;
+      ctx.stroke(); ctx.stroke(); ctx.shadowBlur = 0;
       // inner core
-      ctx.fillStyle = c; ctx.beginPath(); ctx.arc(0, 0, e.r * 0.28, 0, TAU); ctx.fill();
+      ctx.fillStyle = c; ctx.beginPath(); ctx.arc(0, 0, e.r * 0.22, 0, TAU); ctx.fill();
       ctx.restore();
       // telegraph
       if (e.telegraph > 0) {
@@ -219,18 +219,23 @@ export class Renderer {
     ctx.strokeStyle = 'rgba(92,225,255,.06)'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.arc(p.x, p.y, p.magnetR * (this.game.mods.magnetMul || 1), 0, TAU); ctx.stroke();
     if (blink) return;
-    this.glow(p.x, p.y, 46, '#38f0ff', 0.85);
-    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.aim + Math.PI / 2);
+    // shield ring (concept-art signature circle around the ship)
+    ctx.strokeStyle = 'rgba(120,235,255,.4)'; ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.arc(p.x, p.y, 30, 0, TAU); ctx.stroke();
+    ctx.strokeStyle = 'rgba(120,235,255,.12)'; ctx.lineWidth = 5;
+    ctx.beginPath(); ctx.arc(p.x, p.y, 30, 0, TAU); ctx.stroke();
+    this.glow(p.x, p.y, 52, '#38f0ff', 0.9);
+    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.aim + Math.PI / 2); ctx.scale(1.18, 1.18);
     // thruster
     if (p.thrust > 0.15) {
-      ctx.fillStyle = hexA('#7deaff', 0.5 * p.thrust);
+      ctx.fillStyle = hexA('#7deaff', 0.55 * p.thrust);
       ctx.beginPath(); ctx.moveTo(-5, 12); ctx.lineTo(0, 12 + 16 * p.thrust + Math.random() * 6); ctx.lineTo(5, 12); ctx.closePath(); ctx.fill();
     }
     ctx.beginPath();
     ctx.moveTo(0, -17); ctx.lineTo(12, 12); ctx.lineTo(0, 6); ctx.lineTo(-12, 12); ctx.closePath();
-    ctx.fillStyle = 'rgba(56,240,255,.25)'; ctx.fill();
+    ctx.fillStyle = 'rgba(56,240,255,.3)'; ctx.fill();
     ctx.strokeStyle = p.dashT > 0 ? '#ffffff' : '#8ff4ff'; ctx.lineWidth = 2.4;
-    ctx.shadowColor = '#38f0ff'; ctx.shadowBlur = 14; ctx.stroke(); ctx.shadowBlur = 0;
+    ctx.shadowColor = '#38f0ff'; ctx.shadowBlur = 16; ctx.stroke(); ctx.shadowBlur = 0;
     ctx.fillStyle = '#e8f6ff'; ctx.beginPath(); ctx.arc(0, -3, 3.4, 0, TAU); ctx.fill();
     ctx.restore();
     // dash shield ring
@@ -243,13 +248,13 @@ export class Renderer {
     const { ctx } = this;
     for (const b of w.bullets.items) {
       if (b.dead) continue;
-      const len = b.src === 'scatter' ? 8 : 16;
-      if (q !== 'low') this.glow(b.x, b.y, b.r * 4, b.color, 0.7);
+      const len = b.src === 'scatter' ? 11 : 21;
+      if (q !== 'low') this.glow(b.x, b.y, b.r * 4.4, b.color, 0.8);
       ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.a);
       ctx.fillStyle = '#ffffff';
-      ctx.beginPath(); ctx.ellipse(0, 0, len * 0.6, b.r * 0.62, 0, 0, TAU); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(0, 0, len * 0.6, b.r * 0.8, 0, 0, TAU); ctx.fill();
       ctx.fillStyle = b.color;
-      ctx.beginPath(); ctx.ellipse(-len * 0.35, 0, len * 0.5, b.r * 0.42, 0, 0, TAU); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(-len * 0.4, 0, len * 0.55, b.r * 0.55, 0, 0, TAU); ctx.fill();
       ctx.restore();
     }
     for (const b of w.ebullets.items) {
@@ -310,8 +315,10 @@ export class Renderer {
     for (const t of w.texts.items) {
       if (t.dead) continue;
       const a = clamp(t.life / t.maxLife, 0, 1);
-      const s = t.size * (t.crit ? 1 + (1 - a) * 0.4 : 1);
-      ctx.font = `700 ${s}px ui-monospace,monospace`;
+      const s = (t.size + 2) * (t.crit ? 1 + (1 - a) * 0.4 : 1);
+      ctx.font = `800 ${s}px ui-monospace,monospace`;
+      ctx.lineWidth = 3; ctx.strokeStyle = `rgba(3,4,9,${a * 0.8})`;
+      ctx.strokeText(t.txt, t.x, t.y);
       ctx.fillStyle = hexA(t.color.startsWith('#') ? t.color : '#fff', a);
       ctx.shadowColor = t.color; ctx.shadowBlur = t.crit ? 10 : 0;
       ctx.fillText(t.txt, t.x, t.y);

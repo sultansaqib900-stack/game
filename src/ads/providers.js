@@ -160,7 +160,9 @@ export class CrazyGamesProvider {
     if (!sdk) throw new Error('crazygames: SDK not injected (are you on the portal?)');
     await sdk.init?.('game');
     this.sdk = sdk;
+    this.loadingFinished();
   }
+  loadingFinished() { this.sdk?.game?.loadingFinished?.(); }
   setConsent() {}
   showRewarded() {
     return new Promise((resolve) => {
