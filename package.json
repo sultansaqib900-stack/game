@@ -1,0 +1,27 @@
+{
+  "name": "neonvoid",
+  "version": "1.0.0",
+  "description": "NEONVOID - neon survivors-like roguelite with ad layer",
+  "main": "index.js",
+  "scripts": {
+    "start": "node tools/serve.mjs 8080",
+    "test": "node tools/headless-test.mjs",
+    "shots": "node tools/render-shot.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sultansaqib900-stack/game.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sultansaqib900-stack/game/issues"
+  },
+  "homepage": "https://github.com/sultansaqib900-stack/game#readme",
+  "dependencies": {
+    "@napi-rs/canvas": "^1.0.9",
+    "puppeteer": "^25.10.0"
+  },
+  "type": "module"
+}
