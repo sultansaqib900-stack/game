@@ -91,6 +91,22 @@ function pump(frames) {
 const assert = (cond, msg) => { if (!cond) { console.error('✗ FAIL:', msg); process.exit(1); } console.log('✓', msg); };
 
 assert(game.state === 'menu', 'boots to menu');
+
+/* ── balance regression: a brand-new run must not melt in seconds ── */
+{
+  game.startRun();
+  const p0 = game.world.player;
+  p0.weapons.length = 0;   // worst case: no weapons, standing still
+  // three grunts glued to a standing player for 5 simulated seconds
+  for (let i = 0; i < 3; i++) game.world.spawnEnemy('grunt', p0.x + 20, p0.y + 20);
+  pump(300);
+  assert(p0.hp > 60, 'survives 3 point-blank grunts for 5s (hp=' + Math.round(p0.hp) + '/110)');
+  // opening spawn pressure stays gentle
+  game.startRun();
+  pump(60 * 15);
+  assert(game.world.enemies.alive < 22, 'opening 15s spawn pressure is gentle (' + game.world.enemies.alive + ' alive)');
+  game.toMenu();
+}
 await ads.init();
 assert(ads.providerName === 'mock', 'ad provider falls back to mock without IDs');
 assert(ads.rewardedAvailable === true, 'rewarded ads available via mock fallback');
@@ -99,7 +115,7 @@ assert(ads.rewardedAvailable === true, 'rewarded ads available via mock fallback
 game.startRun();
 assert(game.state === 'play', 'run starts');
 game.input.move.x = 0.7; game.input.move.y = 0.3;
-pump(120);
+pump(420);   // ~7s: gentle open means first spawns land after the ramp-in
 assert(game.world.enemies.alive > 0, 'enemies spawn (' + game.world.enemies.alive + ' alive)');
 game.world.player.x = 1600; game.world.player.y = 1200;
 for (let i = 0; i < 40; i++) game.world.spawnEnemy('grunt', 1600 + Math.cos(i) * 120, 1200 + Math.sin(i) * 120);

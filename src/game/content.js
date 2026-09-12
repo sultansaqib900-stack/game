@@ -19,7 +19,7 @@ export const WEAPONS = {
   pulse: {
     name: 'PULSE LANCE', icon: 'bolt', rarity: 'common', color: '#5ce1ff',
     desc: 'Fires a fast bolt at the nearest threat.',
-    base: { cd: 0.62, dmg: 14, count: 1, speed: 640, pierce: 0, life: 1.15, area: 1, spread: 0.1, knock: 70, crit: 0.05 },
+    base: { cd: 0.5, dmg: 16, count: 1, speed: 640, pierce: 0, life: 1.15, area: 1, spread: 0.1, knock: 70, crit: 0.05 },
     levels: [
       { text: '+1 bolt per shot', mods: { count: 1 } },
       { text: '-15% cooldown', mods: { cdMul: 0.85 } },
@@ -222,14 +222,14 @@ export const PASSIVES = {
 
 /* ─────────────────────────── ENEMIES ─────────────────────────── */
 export const ENEMIES = {
-  grunt:   { name: 'Drifter', behavior: 'chase', hp: 22, speed: 64, dmg: 9, r: 13, color: '#ff5d7a', shape: 'hex', xp: 1, coin: 0.06, weight: 100, minTime: 0 },
-  runner:  { name: 'Sprinter', behavior: 'chase', hp: 13, speed: 138, dmg: 7, r: 10, color: '#ffd23d', shape: 'tri', xp: 1, coin: 0.05, weight: 70, minTime: 45 },
-  swarm:   { name: 'Mite', behavior: 'swarm', hp: 7, speed: 104, dmg: 5, r: 7, color: '#b6ff3d', shape: 'dot', xp: 0.6, coin: 0.02, weight: 90, minTime: 100, pack: 6 },
-  brute:   { name: 'Bulwark', behavior: 'chase', hp: 110, speed: 42, dmg: 17, r: 23, color: '#9b6bff', shape: 'sq', xp: 4, coin: 0.25, weight: 34, minTime: 140, knockResist: 0.65, split: 2 },
-  spitter: { name: 'Spitter', behavior: 'ranged', hp: 38, speed: 58, dmg: 11, r: 14, color: '#38f0ff', shape: 'hex', xp: 3, coin: 0.14, weight: 30, minTime: 170, fireCd: 2.4, projSpeed: 260, keep: 280 },
-  orbiter: { name: 'Gyrefang', behavior: 'orbit', hp: 52, speed: 118, dmg: 13, r: 15, color: '#ff9d3d', shape: 'tri', xp: 4, coin: 0.16, weight: 26, minTime: 230 },
-  phantom: { name: 'Phantom', behavior: 'blink', hp: 64, speed: 76, dmg: 15, r: 15, color: '#c46bff', shape: 'dia', xp: 5, coin: 0.2, weight: 20, minTime: 290, blinkCd: 3.2 },
-  titan:   { name: 'Titan', behavior: 'chase', hp: 520, speed: 36, dmg: 26, r: 32, color: '#ff3d5e', shape: 'sq', xp: 26, coin: 1.4, weight: 7, minTime: 320, knockResist: 0.9, elite: true, chest: true },
+  grunt:   { name: 'Drifter', behavior: 'chase', hp: 16, speed: 62, dmg: 6, r: 13, color: '#ff5d7a', shape: 'hex', xp: 1, coin: 0.06, weight: 100, minTime: 0 },
+  runner:  { name: 'Sprinter', behavior: 'chase', hp: 10, speed: 132, dmg: 5, r: 10, color: '#ffd23d', shape: 'tri', xp: 1, coin: 0.05, weight: 70, minTime: 45 },
+  swarm:   { name: 'Mite', behavior: 'swarm', hp: 6, speed: 100, dmg: 3, r: 7, color: '#b6ff3d', shape: 'dot', xp: 0.6, coin: 0.02, weight: 90, minTime: 100, pack: 5 },
+  brute:   { name: 'Bulwark', behavior: 'chase', hp: 90, speed: 40, dmg: 12, r: 23, color: '#9b6bff', shape: 'sq', xp: 4, coin: 0.25, weight: 34, minTime: 140, knockResist: 0.65, split: 2 },
+  spitter: { name: 'Spitter', behavior: 'ranged', hp: 30, speed: 56, dmg: 8, r: 14, color: '#38f0ff', shape: 'hex', xp: 3, coin: 0.14, weight: 30, minTime: 170, fireCd: 2.6, projSpeed: 250, keep: 280 },
+  orbiter: { name: 'Gyrefang', behavior: 'orbit', hp: 40, speed: 112, dmg: 9, r: 15, color: '#ff9d3d', shape: 'tri', xp: 4, coin: 0.16, weight: 26, minTime: 230 },
+  phantom: { name: 'Phantom', behavior: 'blink', hp: 50, speed: 72, dmg: 11, r: 15, color: '#c46bff', shape: 'dia', xp: 5, coin: 0.2, weight: 20, minTime: 290, blinkCd: 3.2 },
+  titan:   { name: 'Titan', behavior: 'chase', hp: 420, speed: 34, dmg: 20, r: 32, color: '#ff3d5e', shape: 'sq', xp: 26, coin: 1.4, weight: 7, minTime: 320, knockResist: 0.9, elite: true, chest: true },
 };
 
 /* ─────────────────────────── BOSSES ─────────────────────────── */

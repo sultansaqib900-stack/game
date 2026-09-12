@@ -138,6 +138,9 @@ export class UI {
     $('hud-coins').textContent = fmtNum(p.coins);
     $('hud-kills').textContent = fmtNum(p.kills);
     $('hud-hp').style.width = clamp(p.hp / p.maxHp * 100, 0, 100) + '%';
+    const st = $('hud-streak');
+    if (p.streak >= 5) { st.textContent = 'x' + p.streak + ' STREAK'; st.classList.add('on'); }
+    else st.classList.remove('on');
     if (g.boss && !$('hud-boss').hidden) $('hud-bosshp').style.width = clamp(g.boss.hp / g.boss.maxHp * 100, 0, 100) + '%';
     // dash ring
     const cdMax = p.dashCdMax * (g.mods.dashMul || 1);
@@ -222,7 +225,14 @@ export class UI {
       ['coin', 'COINS', fmtNum(p.coins)], ['flame', 'DAMAGE', fmtNum(p.dmgDealt)],
       ['clock', 'TIME', fmtTime(rec.time)], ['star', 'BEST STREAK', 'x' + p.bestStreak],
     ].map(([ic, k, v]) => `<div class="kv"><span>${icon(ic)}${k}</span><b>${v}</b></div>`).join('');
-    $('over-coins').textContent = '+' + fmtNum(g.coinsEarned);
+    // coin count-up
+    clearInterval(this._coinIv);
+    const coinEl = $('over-coins'), target = g.coinsEarned, t0 = performance.now();
+    this._coinIv = setInterval(() => {
+      const k = Math.min(1, (performance.now() - t0) / 900);
+      coinEl.textContent = '+' + fmtNum(target * (1 - Math.pow(1 - k, 3)));
+      if (k >= 1) clearInterval(this._coinIv);
+    }, 33);
     const canRevive = ads.rewardedAvailable && g.revivesUsed < g.reviveCharges;
     $('btn-revive').hidden = !canRevive;
     $('revive-tag').textContent = (g.reviveCharges - g.revivesUsed) + ' LEFT';

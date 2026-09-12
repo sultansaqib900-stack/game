@@ -33,7 +33,7 @@ export class World {
 
   makePlayer() {
     const m = this.game.mods;
-    const maxHp = Math.round((100 + (m.hpAdd || 0)) * (m.hpMul || 1));
+    const maxHp = Math.round((110 + (m.hpAdd || 0)) * (m.hpMul || 1));
     return {
       x: ARENA.w / 2, y: ARENA.h / 2, vx: 0, vy: 0, r: 14,
       hp: maxHp, maxHp, speed: 250, aim: -Math.PI / 2,
@@ -127,7 +127,7 @@ export class World {
     const def = ENEMIES[typeId];
     const e = this.enemies.obtain();
     const t = this.game.time;
-    const scale = 1 + Math.pow(t / 75, 1.28) * 0.62 + t / 240;
+    const scale = 1 + Math.pow(t / 90, 1.25) * 0.55 + t / 300;
     e.id = ++this.eid; e.type = typeId; e.def = def;
     e.x = clamp(x, 20, ARENA.w - 20); e.y = clamp(y, 20, ARENA.h - 20);
     e.vx = 0; e.vy = 0;
@@ -213,7 +213,7 @@ export class World {
     const p = this.player, m = this.game.mods;
     if (p.iframes > 0 || p.dashT > 0 || this.game.state !== 'play') return;
     const dmg = Math.max(1, Math.round(amount - (m.armorAdd || 0)));
-    p.hp -= dmg; p.iframes = 0.6; p.hurtT = 0.35; p.streak = 0;
+    p.hp -= dmg; p.iframes = 0.8; p.hurtT = 0.35; p.streak = 0;
     this.addText(p.x, p.y - 20, '-' + dmg, '#ff4d5e', 17);
     this.burst(p.x, p.y, '#ff4d5e', 12, 240, 3);
     this.shake(7); audio.sfx('hurt');
@@ -401,7 +401,7 @@ export class World {
       e.y = clamp(e.y + e.vy * dt, e.r, ARENA.h - e.r);
       // touch damage
       if (e.touchCd <= 0 && d < e.r + p.r + 2) {
-        e.touchCd = 0.9;
+        e.touchCd = 1.15;
         this.damagePlayer(e.def.dmg, e.type);
       }
     }

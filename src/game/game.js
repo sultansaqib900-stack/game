@@ -170,7 +170,10 @@ export class Game extends Bus {
   get aliveCap() { return this.quality === 'low' ? 170 : this.quality === 'med' ? 290 : 420; }
   director(dt) {
     const t = this.time;
-    this.spawnAcc += dt * (1.6 + t * 0.05 + Math.pow(t / 60, 1.7) * 0.75);
+    // gentle open (0.5/s) ramping into chaos; first 15s ramp in further
+    const ramp = t < 15 ? 0.45 + 0.55 * (t / 15) : 1;
+    const rate = (0.5 + (t / 60) * 1.1 + Math.pow(t / 60, 2) * 0.35) * ramp;
+    this.spawnAcc += dt * rate;
     while (this.spawnAcc >= 1) {
       this.spawnAcc -= 1;
       if (this.world.enemies.alive < this.aliveCap) this.spawnRing(1);
@@ -182,7 +185,7 @@ export class Game extends Bus {
   }
   spawnRing(n) {
     const p = this.world.player;
-    const view = Math.max(this.renderer.w, this.renderer.h) / 2 / this.cam.zoom + 90;
+    const view = Math.max(this.renderer.w, this.renderer.h) / 2 / this.cam.zoom + 150;
     for (let i = 0; i < n; i++) {
       const type = this.rollEnemyType();
       const a = rand(0, Math.PI * 2);
