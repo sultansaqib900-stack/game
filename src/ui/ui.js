@@ -10,7 +10,7 @@ const $ = (id) => document.getElementById(id);
 export class UI {
   constructor(game) {
     this.game = game;
-    this.screens = ['boot', 'menu', 'hangar', 'settings', 'pause', 'levelup', 'over'].map(n => $('scr-' + n));
+    this.screens = ['boot', 'menu', 'how', 'hangar', 'settings', 'pause', 'levelup', 'over'].map(n => $('scr-' + n));
     this.byName = {}; this.screens.forEach(s => this.byName[s.id.replace('scr-', '')] = s);
     this.backTarget = 'menu';
     this.toastT = 0;
@@ -25,6 +25,9 @@ export class UI {
 
     on('btn-play', () => { g._banked = false; g.startRun(); });
     on('btn-hangar', () => this.show('hangar'));
+    on('btn-how', () => this.show('how'));
+    on('btn-how-play', () => { g._banked = false; g.startRun(); });
+    on('btn-pause-how', () => { this.backTarget = 'pause'; this.show('how'); });
     on('btn-settings', () => { this.backTarget = this.current === 'pause' ? 'pause' : 'menu'; this.renderSettings(); this.show('settings'); });
     on('btn-resume', () => g.resume());
     on('btn-pause-settings', () => { this.backTarget = 'pause'; this.renderSettings(); this.show('settings'); });
@@ -93,6 +96,7 @@ export class UI {
     g.on('over', (o) => this.renderOver(o));
     g.on('boss', (e) => { $('hud-boss').hidden = !e; if (e) $('hud-bossname').textContent = e.name; });
     g.on('toast', (m) => this.toast(m));
+    g.on('hint', () => this.showHint());
     ads.on('status', () => this.renderAdStatus());
     ads.on('ready', () => this.renderAdStatus());
     ads.on('log', (m) => this.toast('[ads] ' + m));
@@ -301,6 +305,7 @@ export class UI {
       row('MUTE ALL', toggle('muted', s.muted)) +
       row('SCREEN SHAKE', toggle('shake', s.shake)) +
       row('REDUCE FLASH', toggle('reduceFlash', s.reduceFlash)) +
+      row('AIM MODE', `<button class="btn btn-ghost btn-sm" data-cycle="aim">${(s.aim || 'auto').toUpperCase()}</button>`) +
       row('QUALITY', `<button class="btn btn-ghost btn-sm" data-cycle="quality">${s.quality.toUpperCase()}</button>`);
     $('settings-panel').querySelectorAll('[data-set]').forEach(el => el.addEventListener('input', () => {
       s[el.dataset.set] = +el.value; this.game.applySettings(); this.game.persist();
@@ -310,14 +315,31 @@ export class UI {
       this.game.applySettings(); this.game.persist(); audio.sfx('ui');
     }));
     $('settings-panel').querySelectorAll('[data-cycle]').forEach(el => el.addEventListener('click', () => {
-      const order = ['auto', 'low', 'med', 'high'];
-      s.quality = order[(order.indexOf(s.quality) + 1) % order.length];
-      el.textContent = s.quality.toUpperCase();
-      this.game.quality = s.quality === 'auto' ? (innerWidth < 800 ? 'med' : 'high') : s.quality;
-      this.game.applySettings(); this.game.persist();
+      const kind = el.dataset.cycle;
+      if (kind === 'aim') {
+        const order = ['auto', 'cursor'];
+        s.aim = order[(order.indexOf(s.aim || 'auto') + 1) % order.length];
+        el.textContent = s.aim.toUpperCase();
+        this.game.toast(s.aim === 'cursor' ? 'AIM: FIRE TOWARDS CURSOR' : 'AIM: AUTO-TARGET NEAREST');
+      } else {
+        const order = ['auto', 'low', 'med', 'high'];
+        s.quality = order[(order.indexOf(s.quality) + 1) % order.length];
+        el.textContent = s.quality.toUpperCase();
+        this.game.quality = s.quality === 'auto' ? (innerWidth < 800 ? 'med' : 'high') : s.quality;
+        this.game.applySettings();
+      }
+      this.game.persist();
     }));
   }
 
+  showHint() {
+    const el = $('hint');
+    el.innerHTML = '<b>MOVE</b> WASD / STICK &nbsp;·&nbsp; <b>DASH</b> SPACE &nbsp;·&nbsp; WEAPONS <b>AUTO-FIRE</b><br>collect ◆ XP shards · survive the clock';
+    el.hidden = false; el.classList.remove('out');
+    clearTimeout(this._hintT); clearTimeout(this._hintT2);
+    this._hintT = setTimeout(() => el.classList.add('out'), 6500);
+    this._hintT2 = setTimeout(() => { el.hidden = true; }, 7200);
+  }
   toast(msg) {
     const el = $('toast');
     el.textContent = msg; el.hidden = false;

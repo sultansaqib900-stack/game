@@ -30,8 +30,7 @@ export const WEAPONS = {
       { text: 'Pierce +2, +10% crit', mods: { pierce: 2, crit: 0.1 } },
     ],
     fire(w, s, p) {
-      const t = w.nearest(p.x, p.y, 900);
-      const a = t ? angleTo(p.x, p.y, t.x, t.y) : p.aim;
+      const a = w.aimAngle(p);
       for (let i = 0; i < s.count; i++) {
         const off = (i - (s.count - 1) / 2) * (s.spread + 0.06);
         w.spawnBullet({ x: p.x, y: p.y, a: a + off + rand(-0.02, 0.02), speed: s.speed, dmg: s.dmg, pierce: s.pierce, life: s.life, r: 5 * s.area, color: '#7deaff', knock: s.knock, crit: s.crit, src: 'pulse' });
@@ -53,8 +52,7 @@ export const WEAPONS = {
       { text: '+4 shards, huge knockback', mods: { count: 4, knock: 120 } },
     ],
     fire(w, s, p) {
-      const t = w.nearest(p.x, p.y, 520);
-      const a = t ? angleTo(p.x, p.y, t.x, t.y) : p.aim;
+      const a = w.aimAngle(p);
       for (let i = 0; i < s.count; i++) {
         const off = (i - (s.count - 1) / 2) * (s.spread * 2 / Math.max(1, s.count - 1)) + rand(-0.06, 0.06);
         w.spawnBullet({ x: p.x, y: p.y, a: a + off, speed: s.speed * rand(0.85, 1.15), dmg: s.dmg, pierce: s.pierce, life: s.life, r: 4 * s.area, color: '#ffe27a', knock: s.knock, crit: s.crit, src: 'scatter' });
@@ -111,8 +109,7 @@ export const WEAPONS = {
       { text: 'Twin rails', mods: { count: 1 } },
     ],
     fire(w, s, p) {
-      const t = w.nearest(p.x, p.y, 1100);
-      const a = t ? angleTo(p.x, p.y, t.x, t.y) : p.aim;
+      const a = w.aimAngle(p);
       for (let b = 0; b < s.count; b++) {
         const ang = a + (b - (s.count - 1) / 2) * 0.5;
         w.fireBeam({ x: p.x, y: p.y, a: ang, len: s.len, width: s.width, dmg: s.dmg, knock: s.knock, crit: s.crit, color: '#9fc4ff', burn: s.special === 'burn' ? 3 : 0 });

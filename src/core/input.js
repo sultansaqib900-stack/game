@@ -17,6 +17,7 @@ export class Input {
     this.move = { x: 0, y: 0 };
     this.touch = false;             // true once a touch is seen (enables on-screen controls)
     this.stick = { active: false, id: -1, ox: 0, oy: 0, x: 0, y: 0 };
+    this.pointer = { sx: 0, sy: 0, has: false };   // mouse position (screen px) for cursor aim
     this.enabled = true;
     this.onPause = null;            // callback wired by game
     this._pointers = new Map();
@@ -49,6 +50,7 @@ export class Input {
     e.preventDefault();
   }
   _pointerMove(e) {
+    if (e.pointerType === 'mouse') { this.pointer.sx = e.clientX; this.pointer.sy = e.clientY; this.pointer.has = true; }
     if (this.stick.active && e.pointerId === this.stick.id) {
       let dx = e.clientX - this.stick.ox, dy = e.clientY - this.stick.oy;
       const m = Math.hypot(dx, dy), max = 56;

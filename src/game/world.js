@@ -44,6 +44,17 @@ export class World {
     };
   }
 
+  /* aim helper: nearest-enemy auto-aim, or cursor aim when Settings → AIM: CURSOR */
+  aimAngleFrom(x, y) {
+    if (this.game.save.settings.aim === 'cursor' && this.game.input.pointer.has) {
+      const c = this.game.cursorWorld();
+      return Math.atan2(c.y - y, c.x - x);
+    }
+    const t = this.nearest(x, y, 900);
+    return t ? angleTo(x, y, t.x, t.y) : this.player.aim;
+  }
+  aimAngle(p) { return this.aimAngleFrom(p.x, p.y); }
+
   /* ── helpers exposed to weapon fire() ─────────────────────────── */
   sfx(n, o) { audio.sfx(n, o); }
   shake(v) { this.game.shake(v); }
@@ -313,10 +324,10 @@ export class World {
       d.x = p.x + Math.cos(d.a) * s.orbitR; d.y = p.y + Math.sin(d.a) * s.orbitR;
       d.cd -= dt;
       if (d.cd <= 0) {
-        const t = this.nearest(d.x, d.y, 700);
-        if (t) {
+        const cursor = this.game.save.settings.aim === 'cursor';
+        if (cursor || this.nearest(d.x, d.y, 700)) {
           d.cd = s.cd;
-          const a = angleTo(d.x, d.y, t.x, t.y);
+          const a = this.aimAngleFrom(d.x, d.y);
           this.spawnBullet({ x: d.x, y: d.y, a, speed: s.speed, dmg: s.dmg, pierce: s.pierce, life: s.life, r: 4 * s.area, color: '#5cffd4', knock: s.knock, crit: s.crit, src: 'drone' });
           audio.sfx('shoot', { pitch: 1.4 });
         }

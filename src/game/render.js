@@ -62,6 +62,16 @@ export class Renderer {
     this.drawBeamsArcs(w);
     ctx.globalCompositeOperation = 'source-over';
     this.drawTexts(w);
+    // cursor-aim reticle
+    if (game.save.settings.aim === 'cursor' && game.input.pointer.has && game.state === 'play') {
+      const c = game.cursorWorld();
+      ctx.strokeStyle = 'rgba(232,246,255,.75)'; ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.arc(c.x, c.y, 12, 0, TAU); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(c.x - 18, c.y); ctx.lineTo(c.x - 6, c.y); ctx.moveTo(c.x + 6, c.y); ctx.lineTo(c.x + 18, c.y);
+      ctx.moveTo(c.x, c.y - 18); ctx.lineTo(c.x, c.y - 6); ctx.moveTo(c.x, c.y + 6); ctx.lineTo(c.x, c.y + 18);
+      ctx.stroke();
+    }
     // screen-space overlays
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.drawOverlays();

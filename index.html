@@ -34,6 +34,7 @@
     </div>
     <div id="hud-timer" class="timer">00:00</div>
     <div id="hud-streak"></div>
+    <div id="hint" hidden></div>
     <div id="hud-boss" class="bossbar" hidden>
       <span id="hud-bossname">WARDEN</span>
       <div class="bar boss"><i id="hud-bosshp"></i></div>
@@ -69,6 +70,7 @@
       <nav class="menu-buttons">
         <button id="btn-play" class="btn btn-primary btn-lg"><span class="ic" data-icon="play"></span>PLAY</button>
         <button id="btn-hangar" class="btn btn-lg"><span class="ic" data-icon="wrench"></span>HANGAR</button>
+        <button id="btn-how" class="btn btn-lg"><span class="ic" data-icon="book"></span>HOW TO PLAY</button>
         <button id="btn-settings" class="btn btn-lg"><span class="ic" data-icon="gear"></span>SETTINGS</button>
       </nav>
       <aside class="panel best-run">
@@ -81,6 +83,26 @@
         <span class="ver">v1.0</span>
         <span class="counter coin"><span class="ic" data-icon="coin"></span><b id="menu-coins">0</b></span>
       </footer>
+    </section>
+
+    <section id="scr-how" class="screen" hidden>
+      <h2 class="scr-title glow-cyan">HOW TO PLAY</h2>
+      <div class="scr-sub">YOU STEER · THE GUNS AIM THEMSELVES</div>
+      <div class="panel how-panel">
+        <div class="how-row"><span class="keys"><b class="key">W</b><b class="key">A</b><b class="key">S</b><b class="key">D</b></span><span>Move (or arrows / left touch-stick / gamepad stick)</span></div>
+        <div class="how-row"><span class="keys"><b class="key">SPACE</b></span><span>Dash — brief invulnerability, burst through swarms</span></div>
+        <div class="how-row"><span class="keys"><b class="key">AUTO</b></span><span>Weapons fire &amp; aim on their own. Want control? Settings → AIM: CURSOR</span></div>
+        <div class="how-row"><span class="keys"><b class="key">ESC</b></span><span>Pause</span></div>
+        <div class="how-sep"></div>
+        <div class="how-row"><span class="keys gem">◆</span><span>Collect blue XP shards → level up → draft one of three upgrade cards</span></div>
+        <div class="how-row"><span class="keys coin">●</span><span>Coins fund permanent hangar upgrades between runs</span></div>
+        <div class="how-row"><span class="keys boss">⬢</span><span>Bosses at 05:00 / 10:00 / 15:00 — survive to 20:00 to break the protocol</span></div>
+        <div class="how-row"><span class="keys ad">▶</span><span>Optional rewarded ads: revive, double coins, free rerolls, daily crate</span></div>
+      </div>
+      <div class="row">
+        <button id="btn-how-play" class="btn btn-primary btn-lg"><span class="ic" data-icon="play"></span>DEPLOY NOW</button>
+        <button class="btn btn-ghost" data-go="menu"><span class="ic" data-icon="back"></span>BACK</button>
+      </div>
     </section>
 
     <section id="scr-hangar" class="screen" hidden>
@@ -125,6 +147,7 @@
       <h2 class="scr-title glow-cyan">PAUSED</h2>
       <div class="stack">
         <button id="btn-resume" class="btn btn-primary btn-lg"><span class="ic" data-icon="play"></span>RESUME</button>
+        <button id="btn-pause-how" class="btn btn-lg"><span class="ic" data-icon="book"></span>HOW TO PLAY</button>
         <button id="btn-pause-settings" class="btn btn-lg"><span class="ic" data-icon="gear"></span>SETTINGS</button>
         <button id="btn-quit" class="btn btn-danger btn-lg"><span class="ic" data-icon="skull"></span>ABANDON RUN</button>
       </div>

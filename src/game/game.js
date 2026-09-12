@@ -10,8 +10,8 @@ import { WEAPONS, PASSIVES, META, EVENTS, xpForLevel, FILLERS, RARITY, metaCost 
 const DEFAULT_SAVE = {
   coins: 0, meta: {}, runs: [],
   best: { time: 0, level: 0, kills: 0 },
-  settings: { music: 0.55, sfx: 0.85, muted: false, shake: true, reduceFlash: false, quality: 'auto' },
-  consent: null, crateDay: 0,
+  settings: { music: 0.55, sfx: 0.85, muted: false, shake: true, reduceFlash: false, quality: 'auto', aim: 'auto' },
+  consent: null, crateDay: 0, howSeen: false,
 };
 
 export class Game extends Bus {
@@ -78,6 +78,7 @@ export class Game extends Bus {
     ads.context.runId = this.runId;
     ads.gameplayStart();
     this.emit('state', 'play');
+    if (!this.save.howSeen) this.emit('hint');
   }
 
   pause() {
@@ -328,6 +329,7 @@ export class Game extends Bus {
     if (this.time > this.save.best.time) this.save.best.time = this.time;
     if (p.level > this.save.best.level) this.save.best.level = p.level;
     if (p.kills > this.save.best.kills) this.save.best.kills = p.kills;
+    if (!this.save.howSeen) { this.save.howSeen = true; this.persist(); }
     this.persist();
     ads.context.runSeconds = this.time;
     this.emit('over', { win, rec });
@@ -383,6 +385,10 @@ export class Game extends Bus {
 
   toast(msg) { this.emit('toast', msg); }
   ads_happy() { try { ads.provider?.happyTime?.(); } catch {} }
+  cursorWorld() {
+    const r = this.renderer, cam = this.cam, p = this.input.pointer;
+    return { x: cam.x + (p.sx - r.w / 2) / cam.zoom, y: cam.y + (p.sy - r.h / 2) / cam.zoom };
+  }
 }
 
 /* local alias to avoid circular import cost in hot paths */

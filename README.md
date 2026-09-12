@@ -19,6 +19,21 @@ Or host the folder anywhere static (GitHub Pages, Netlify, S3, a portal build).
 **Controls** — WASD / arrows / touch joystick to move · `Space`/`Shift`/touch button to dash (i-frames) ·
 weapons auto-fire & auto-aim · `Esc`/`P` pause · gamepad supported.
 
+### How to play
+
+You steer; the guns aim themselves (survivors-like). Set **Settings → AIM MODE: CURSOR** if you'd
+rather fire toward your mouse (a reticle appears).
+
+1. **Move** with WASD / arrows / left touch-stick / gamepad stick. Kite enemies — never stand still.
+2. **Dash** (`Space`) through swarms — you're invulnerable during the dash.
+3. **Collect** blue ◆ XP shards → level up → draft one of three upgrade cards (reroll available,
+   plus ad-funded free rerolls / bonus cards).
+4. **Coins** (gold ●) fund permanent HANGAR upgrades between runs.
+5. **Bosses** at 05:00 / 10:00 / 15:00. Survive to 20:00 to win. On death, an optional rewarded ad
+   revives you once (more with the REVIVE meta upgrade), and another doubles your coins.
+
+First run shows an on-screen control hint; the full guide lives in **HOW TO PLAY** (menu & pause).
+
 ---
 
 ## The game
